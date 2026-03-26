@@ -33,7 +33,7 @@ _Use commands as needed. Contact the owner if necessary._
 `.trim()
 
       await ctx.replyWithPhoto(
-        { url: 'https://files.catbox.moe/3z9k81.jpg' },
+        { url: 'https://raw.githubusercontent.com/Official123-12/STANYFREEBOT-/refs/heads/main/6F84E081-C8A6-454B-8D42-8E85100378AB.png' },
         {
           caption: text,
           parse_mode: 'Markdown'
