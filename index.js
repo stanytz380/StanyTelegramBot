@@ -2,12 +2,11 @@ const { Telegraf } = require('telegraf')
 const config = require('./config')
 const fs = require('fs')
 const path = require('path')
-const http = require('http')  // Add this line
+const http = require('http') // we'll use the built-in server
 
 const bot = new Telegraf(config.botToken)
 
 const owner = String(config.ownerId)
-
 const isOwner = (ctx) => String(ctx.from?.id) === owner
 
 bot.context.owner = owner
@@ -66,16 +65,23 @@ fs.watch(COMMAND_DIR, (_, file) => {
   }, 200)
 })
 
-// --- Start an HTTP server on port 8080 ---
+// --- Webhook Setup ---
 const PORT = process.env.PORT || 8080
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' })
-  res.end('Bot is running (polling mode)\n')
-})
+const WEBHOOK_PATH = `/webhook/${config.botToken}`
+const DOMAIN = process.env.RENDER_EXTERNAL_URL || 'https://stanytelegrambot.onrender.com' // Replace with your Render app name
 
-server.listen(PORT, () => {
-  console.log(`HTTP server listening on port ${PORT} ✅`)
-})
+bot.telegram.setWebhook(`${DOMAIN}${WEBHOOK_PATH}`)
+  .then(() => console.log(`✅ Webhook set to ${DOMAIN}${WEBHOOK_PATH}`))
+  .catch(err => console.error('Webhook set failed:', err))
 
-// --- Start bot in polling mode ---
-bot.launch().then(() => console.log('Bot Active✅️'))
+bot.startWebhook(WEBHOOK_PATH, null, PORT)
+  .then(() => console.log(`🚀 Bot listening on port ${PORT}`))
+  .catch(err => console.error('Webhook server failed:', err))
+
+// Optional: Simple HTTP response for root path to show bot is alive
+http.createServer((req, res) => {
+  if (req.url === '/') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' })
+    res.end('Bot is running (webhook mode)\n')
+  }
+}).listen(PORT, () => console.log(`HTTP server on port ${PORT} (additional)`))
