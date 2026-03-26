@@ -16,14 +16,14 @@ module.exports = {
             inline_keyboard: [
               [
                 {
-                  text: '📢 WhatsApp Channel',
-                  url: 'https://whatsapp.com/channel/0029Vb77eyl05MUcCQBHME2f'
+                  text: '📢 Website Link For More Bots',
+                  url: 'stanytz.zone.id'
                 }
               ],
               [
                 {
                   text: '👤 Owner',
-                  url: 'https://t.me/rvli07'
+                  url: 'https://t.me/Stanytz076'
                 }
               ]
             ]
