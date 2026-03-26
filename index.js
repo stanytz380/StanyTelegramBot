@@ -2,6 +2,7 @@ const { Telegraf } = require('telegraf')
 const config = require('./config')
 const fs = require('fs')
 const path = require('path')
+const http = require('http')  // Add this line
 
 const bot = new Telegraf(config.botToken)
 
@@ -65,4 +66,16 @@ fs.watch(COMMAND_DIR, (_, file) => {
   }, 200)
 })
 
+// --- Start an HTTP server on port 8080 ---
+const PORT = process.env.PORT || 8080
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' })
+  res.end('Bot is running (polling mode)\n')
+})
+
+server.listen(PORT, () => {
+  console.log(`HTTP server listening on port ${PORT} ✅`)
+})
+
+// --- Start bot in polling mode ---
 bot.launch().then(() => console.log('Bot Active✅️'))
