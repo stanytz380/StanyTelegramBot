@@ -19,7 +19,7 @@ bot.use(async (ctx, next) => {
     const username = ctx.from?.username ? '@' + ctx.from.username : '-'
     const id = ctx.from?.id || '-'
     const waktu = new Date().toLocaleTimeString('id-ID', {
-      timeZone: 'Asia/Jakarta',
+      timeZone: 'Africa/Nairobi',
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
